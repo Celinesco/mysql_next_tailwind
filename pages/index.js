@@ -1,8 +1,23 @@
-export default function Home() {
-    return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <h1 className='text-3xl font-bold underline'>Hello World</h1>
-      </main>
-    )
+import { PostForm } from '../components/PostForm';
+import axios from 'axios';
+
+export default function Home({ posts }) {
+  console.log('Deberia imprimirse',posts)
+  return (
+    <main className="flex flex-col items-center justify-between pt-24">
+      <h1 className='text-3xl font-bold '>Hello World</h1>
+      <PostForm />
+    </main>
+  )
+}
+
+
+export const getServerSideProps = async (context) => {
+  const { data: posts } = await axios.get('http://localhost:3000/api/posts')
+  console.log(posts)
+  return {
+    props: {
+      posts,
+    }
   }
-  
+}
