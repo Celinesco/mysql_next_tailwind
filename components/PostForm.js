@@ -1,36 +1,70 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 export function PostForm() {
 
     const router = useRouter();
+    // con router.query puedo acceder a la info que tengo en la url. Osea.. las queries
+    // console.log(router.query)
+
+
+
+    useEffect(() => {
+        const getProduct = async (id) => {
+            const { data } = await axios.get('/api/posts/' + id);
+            setPost({ title: data.title, description: data.description })
+            return
+        }
+        if (router.query?.id) {
+            // console.log('QUERY', router.query.id)
+            getProduct(router.query.id)
+        }
+    }, [])
 
     const [post, setPost] = useState({
         title: "",
-        description:""
-      });
-      const handleChange = ({target: {name, value}}) => {
-        setPost({...post, [name]: value})
-      }
+        description: ""
+    });
 
-   const  handleSubmit = async(e) => {
-        e.preventDefault();
-        console.log('creating product')
-        const res = await axios.post('/api/posts', post)
-        router.push('/')
-        console.log(res)
+    const handleChange = ({ target: { name, value } }) => {
+        setPost({ ...post, [name]: value })
     }
-    
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (router.query.id) {
+            console.log('update');
+           const res = await axios.put('/api/posts/' + router.query.id, post)
+        }
+        else {
+            const res = await axios.post('/api/posts', post);
+            console.log(res)
+        }
+       
+   
+        router.push('/')
+ 
+    }
+
     return (
         <div className="bg-white p-10  w-full max-w-xs shadow-md rounded">
             <h3 className='mb-3'>Enter your new post here</h3>
             <form onSubmit={handleSubmit} className="flex flex-col">
 
                 <label htmlFor="title">Title:</label>
-                <input className="my-2 rounded shadow border py-2" type="text" id="title" name="title" onChange={handleChange}></input>
+                <input 
+                className="my-2 rounded shadow border py-2" 
+                type="text" id="title" 
+                name="title" onChange={handleChange} 
+                value={post.title ? post.title : ""}></input>
                 <label htmlFor="description">Description</label>
-                <textarea onChange={handleChange} className="my-2 rounded shadow border py-2" id='description' name="description"></textarea>
+                <textarea 
+                onChange={handleChange} 
+                className="my-2 rounded shadow border py-2" 
+                id='description' 
+                name="description" 
+                value={post.description}></textarea>
 
 
                 <button className='bg-cyan-200 hover:bg-cyan-400 rounded focus:outline-none'>Save</button>
