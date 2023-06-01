@@ -67,7 +67,7 @@ export function PostForm() {
                 value={post.description}></textarea>
 
 
-                <button className='bg-cyan-200 hover:bg-cyan-400 rounded focus:outline-none'>Save</button>
+                <button className='bg-cyan-200 hover:bg-cyan-400 rounded focus:outline-none'>{router.query.id ? 'Update' : 'Save'}</button>
             </form>
         </div>
     )
