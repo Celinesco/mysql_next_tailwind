@@ -48,9 +48,15 @@ export default async function handler(req, res) {
 }
 
 const getPosts = async(req, res) => {
-    const [result] = await pool.query('SELECT * FROM Posts');
-    console.log(result)
-    return res.status(200).json(result);
+    try {
+        const [result] = await pool.query('SELECT * FROM Posts');
+        console.log(result)
+        return res.status(200).json(result);
+    } catch (err) {
+        // hay que evitar darle mucha informacion al cliente para evitar ataques mysql injeccion
+        return res.status(500).json({error: err.message})
+    }
+ 
 }
 
 const savePost = async (req, res) => {

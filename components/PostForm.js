@@ -33,38 +33,42 @@ export function PostForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (router.query.id) {
-            console.log('update');
-           const res = await axios.put('/api/posts/' + router.query.id, post)
+
+        try {
+            if (router.query.id) {
+                await axios.put('/api/posts/' + router.query.id, post)
+            }
+            else {
+                await axios.post('/api/posts', post);
+            }
+
+            router.push('/')
+
+        } catch (err) {
+            console.log(err)
         }
-        else {
-            const res = await axios.post('/api/posts', post);
-            console.log(res)
-        }
-       
-   
-        router.push('/')
- 
+
+
     }
 
     return (
-        <div className="bg-white p-10  w-full max-w-xs shadow-md rounded">
+        <div className="bg-white p-10 mx-auto w-96 max-w-xs shadow-md rounded text-gray-600">
             <h3 className='mb-3'>Enter your new post here</h3>
             <form onSubmit={handleSubmit} className="flex flex-col">
 
                 <label htmlFor="title">Title:</label>
-                <input 
-                className="my-2 rounded shadow border py-2" 
-                type="text" id="title" 
-                name="title" onChange={handleChange} 
-                value={post.title ? post.title : ""}></input>
+                <input
+                    className="my-2 rounded shadow border py-2"
+                    type="text" id="title"
+                    name="title" onChange={handleChange}
+                    value={post.title ? post.title : ""}></input>
                 <label htmlFor="description">Description</label>
-                <textarea 
-                onChange={handleChange} 
-                className="my-2 rounded shadow border py-2" 
-                id='description' 
-                name="description" 
-                value={post.description}></textarea>
+                <textarea
+                    onChange={handleChange}
+                    className="my-2 rounded shadow border py-2"
+                    id='description'
+                    name="description"
+                    value={post.description}></textarea>
 
 
                 <button className='bg-cyan-200 hover:bg-cyan-400 rounded focus:outline-none'>{router.query.id ? 'Update' : 'Save'}</button>

@@ -27,7 +27,7 @@ export default function Home({ posts }) {
       </div>
       
       {posts.map(post => (
-        <div key={post.id} className='border border-gray-200 shadow my-6 p-10 flex justify-between bg-white'>
+        <div key={post.id} className='border border-gray-200 shadow my-6 p-10 flex justify-between bg-white text-gray-600'>
           <div>
             <h3>{post.title}</h3>
             <p>{post.description}</p>

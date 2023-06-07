@@ -1,10 +1,10 @@
+import Layout from "../../../components/Layout"
 import NewPost from "../newpost"
 
 export default function EditPost () {
     return (
-        <>
-        <h1>Edit post</h1>
-        <NewPost sectionTitle='Edit Post'/>
-        </>
+        <Layout>
+            <NewPost sectionTitle='Edit Post'/>
+        </Layout>
     )
 }
